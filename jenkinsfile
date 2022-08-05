@@ -1,25 +1,39 @@
+def COLOR_MAP = [
+    'SUCCESS': 'good', 
+    'FAILURE': 'danger',
+]
+
+def getBuildUser() {
+    return currentBuild.rawBuild.getCause(Cause.UserIdCause).getUserId()
+}
+
+
 pipeline {
-    agent any {
-        
+    //The agent section specifies where the entire Pipeline, or a specific stage, 
+    //will execute in the Jenkins environment depending on where the agent section is placed.
+    agent any
     stages {
-        stage('Install Dependencies') { 
+        
+        stage('Build'){
+            //The steps section defines a series of one or more steps to be executed in a given stage directive.
             steps {
-                sh 'npm install cypress'
-                sh 'npx cypress run'
+                echo "Building the application"
             }
         }
-        stage('Build') { 
+        
+        stage('Testing') {
             steps {
-                sh 'npm run build'
+                
+                bat "npm install --save-dev audit-filter"
+                bat "npx cypress run"
             }
         }
-        stage('Test') { 
+        
+        stage('Deploy'){
             steps {
-                sh 'npm run ci:cy-run'
+                echo "Deploying"
             }
         }
     }
+    
 }
-}
-
-
