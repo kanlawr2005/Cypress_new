@@ -24,8 +24,8 @@ pipeline {
         stage('Testing') {
             steps {
                 
-                bat "npm install --save-dev audit-filter"
-                bat "npx cypress run"
+                sh "npm install --save-dev audit-filter"
+                sh "npx cypress run"
             }
         }
         
